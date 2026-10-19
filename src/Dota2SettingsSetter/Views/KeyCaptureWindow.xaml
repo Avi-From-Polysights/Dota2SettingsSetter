@@ -1,0 +1,27 @@
+<Window x:Class="Dota2SettingsSetter.Views.KeyCaptureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Style="{StaticResource DialogWindow}" WindowStartupLocation="CenterOwner" Title="Set hotkey">
+    <Border Padding="24,20" Width="440">
+        <StackPanel>
+            <TextBlock Text="SET HOTKEY" Style="{StaticResource SectionLabel}" />
+            <TextBlock x:Name="ActionText" FontSize="16" FontWeight="SemiBold" Margin="0,4,0,16" TextWrapping="Wrap" />
+            <Border Background="{StaticResource BgBrush}" CornerRadius="6" Height="96"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock x:Name="PreviewText" Text="Press a key…" FontSize="22" FontFamily="{StaticResource MonoFont}"
+                               HorizontalAlignment="Center" />
+                    <TextBlock x:Name="CurrentText" Foreground="{StaticResource FaintBrush}" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                </StackPanel>
+            </Border>
+            <TextBlock Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,12,0,0" FontSize="12"
+                       Text="Hold Alt, Ctrl or Shift for a combo. Middle mouse, Mouse 4/5 and the scroll wheel work too. Esc cancels." />
+            <TextBlock x:Name="ErrorText" Foreground="{StaticResource DangerBrush}" Margin="0,8,0,0" Visibility="Collapsed" TextWrapping="Wrap" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
+                <Button Content="Unbind" Click="Unbind_Click" Focusable="False" Margin="0,0,8,0"
+                        ToolTip="Leave this action without a hotkey" />
+                <Button Content="Cancel" Click="Cancel_Click" Focusable="False" />
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

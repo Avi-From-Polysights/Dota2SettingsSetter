@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- .NET Framework 4.8 ships with Windows 10/11, so the exe runs with nothing to install. -->
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>Dota2SettingsSetter</AssemblyName>
+    <RootNamespace>Dota2SettingsSetter</RootNamespace>
+    <Version>0.1.0</Version>
+    <Product>Dota 2 Settings Setter</Product>
+    <Description>Store and swap Dota 2 hotkey profiles per hero.</Description>
+    <Company>Avi-From-Polysights</Company>
+    <Authors>Avi-From-Polysights</Authors>
+    <Copyright>Copyright (c) 2026 Avi-From-Polysights</Copyright>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
+    <Resource Include="Assets\icon.png" />
+  </ItemGroup>
+
+</Project>

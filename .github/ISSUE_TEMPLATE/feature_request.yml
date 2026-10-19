@@ -1,0 +1,14 @@
+name: Idea or feature request
+description: Suggest something the app should do
+title: "[Idea] "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: What you're trying to do in game, and what the app could do about it
+      placeholder: e.g. Switch profiles automatically when I pick a hero
+    validations:
+      required: true

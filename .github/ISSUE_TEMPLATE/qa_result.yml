@@ -1,0 +1,78 @@
+name: QA result
+description: Report how a test went, pass or fail
+title: "[QA] "
+labels:
+  - qa
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing! One test per issue is easiest to track. The checklist is in the open issue labelled **qa**.
+        Demo Hero mode (Play → Demo Hero) is the quickest place to test in-game switching.
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: Shown in the title bar
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options:
+        - Passed
+        - Failed
+        - Partly worked
+    validations:
+      required: true
+  - type: dropdown
+    id: method
+    attributes:
+      label: Switch method
+      options:
+        - exec command (exec dss_...)
+        - Pasted the bind commands
+        - Write to Dota (keybind file)
+        - Not about switching
+    validations:
+      required: true
+  - type: input
+    id: test
+    attributes:
+      label: Which test?
+      description: Checklist number or a short name
+      placeholder: "3. Item key moved onto an ability key"
+  - type: input
+    id: where
+    attributes:
+      label: Where you tested
+      placeholder: Demo Hero as Invoker / unranked / bot match
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you did
+      placeholder: |
+        1. Made an Invoker profile with item slot 1 on Q (swapped with ability 1)
+        2. In Demo Hero, typed exec dss_invoker
+        3. Pressed Q with a Blink Dagger in slot 1
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console text
+      description: What you typed and anything Dota printed back
+      render: text
+  - type: textarea
+    id: files
+    attributes:
+      label: Screenshots or files
+      description: Drag files in. A profile exported with Export… or %APPDATA%\Dota2SettingsSetter\error.log helps a lot.

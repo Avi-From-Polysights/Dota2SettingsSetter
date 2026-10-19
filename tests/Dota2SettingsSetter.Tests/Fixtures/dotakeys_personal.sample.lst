@@ -1,0 +1,310 @@
+"KeyBindings"
+{
+	"Name"		"ARROW"
+	"Version"		"12"
+	"RowVersion"		"4"
+	"UseHeroBindings"		"0"
+	"LinkHeroToCourier"		"0"
+	"LinkHeroToNeutral"		"0"
+	"LinkPlayerToSpectator"		"0"
+	"Keys"
+	{
+		"CameraUp"
+		{
+			"Name"		"CameraUp"
+			"Action"		"+forward"
+			"Key"		"UPARROW"
+			"Panel"		"#DOTA_KEYBIND_MENU_PLAYER"
+			"PanelRow"		"1"
+			"Description"		"#DOTA_MoveForward"
+			"Version"		"2"
+		}
+		"CameraGrip"
+		{
+			"Name"		"CameraGrip"
+			"Action"		"+cameragrip"
+			"Panel"		"#DOTA_KEYBIND_MENU_PLAYER"
+			"PanelRow"		"5"
+			"Description"		"#DOTA_CameraGrip"
+			"Version"		"2"
+			"Key"		"MOUSE3"
+			"Mode"		"0"
+		}
+		"RecentEvent"
+		{
+			"Name"		"RecentEvent"
+			"Action"		"dota_recent_event"
+			"Panel"		"#DOTA_KEYBIND_MENU_PLAYER"
+			"PanelRow"		"7"
+			"Description"		"#DOTA_RecentEvent"
+			"Version"		"3"
+		}
+		"ScoreboardToggle"
+		{
+			"Name"		"ScoreboardToggle"
+			"Action"		"+showscores"
+			"Key"		"`"
+			"Mode"		"0"
+		}
+		"ActivateGlyph"
+		{
+			"Name"		"ActivateGlyph"
+			"Action"		"dota_glyph"
+			"Key"		"J"
+		}
+		"ChatTeam"
+		{
+			"Name"		"ChatTeam"
+			"Action"		"say"
+			"Key"		"ENTER"
+		}
+		"ChatGlobal"
+		{
+			"Name"		"ChatGlobal"
+			"Action"		"say"
+			"Dependency"		"ChatTeam"
+			"DependencyText"		"SHIFT-"
+			"Key"		"ENTER"
+			"Modifier"		"SHIFT"
+			"Mode"		"0"
+		}
+		"ChatVoiceTeam"
+		{
+			"Name"		"ChatVoiceTeam"
+			"Action"		"+voicerecord"
+			"Key"		"G"
+		}
+		"HeroAttack"
+		{
+			"Name"		"HeroAttack"
+			"Action"		"mc_attack"
+			"Key"		"A"
+			"Mode"		"0"
+		}
+		"HeroStop"
+		{
+			"Name"		"HeroStop"
+			"Action"		"dota_stop"
+			"Key"		"S"
+		}
+		"HeroHold"
+		{
+			"Name"		"HeroHold"
+			"Action"		"dota_hold"
+			"Key"		"H"
+		}
+		"HeroSelect"
+		{
+			"Name"		"HeroSelect"
+			"Action"		"+dota_camera_follow"
+			"Key"		"SPACE"
+			"Mode"		"0"
+		}
+		"ControlGroup1"
+		{
+			"Name"		"ControlGroup1"
+			"Action"		"+dota_control_group 1"
+			"Key"		"TAB"
+			"Mode"		"0"
+		}
+		"ControlGroup4"
+		{
+			"Name"		"ControlGroup4"
+			"Action"		"+dota_control_group 4"
+			"Key"		"4"
+		}
+		"AbilityPrimary1"
+		{
+			"Name"		"AbilityPrimary1"
+			"Action"		"dota_ability_execute 0"
+			"Key"		"Q"
+			"Mode"		"0"
+		}
+		"AbilityPrimary2"
+		{
+			"Name"		"AbilityPrimary2"
+			"Action"		"dota_ability_execute 1"
+			"Key"		"W"
+			"Mode"		"0"
+		}
+		"AbilityPrimary3"
+		{
+			"Name"		"AbilityPrimary3"
+			"Action"		"dota_ability_execute 2"
+			"Key"		"E"
+			"Mode"		"0"
+		}
+		"AbilitySecondary1"
+		{
+			"Name"		"AbilitySecondary1"
+			"Action"		"dota_ability_execute 3"
+			"Key"		"D"
+			"Mode"		"0"
+		}
+		"AbilitySecondary2"
+		{
+			"Name"		"AbilitySecondary2"
+			"Action"		"dota_ability_execute 4"
+			"Key"		"F"
+			"Mode"		"0"
+		}
+		"AbilityUltimate"
+		{
+			"Name"		"AbilityUltimate"
+			"Action"		"dota_ability_execute 5"
+			"Key"		"R"
+			"Mode"		"2"
+		}
+		"AbilityPrimary1AutoCast"
+		{
+			"Name"		"AbilityPrimary1AutoCast"
+			"Action"		"dota_ability_autocast 0"
+			"Key"		"q"
+			"Modifier"		"ALT"
+			"Mode"		"0"
+		}
+		"LearnStats"
+		{
+			"Name"		"LearnStats"
+			"Action"		"dota_learn_stats"
+			"Key"		"U"
+		}
+		"LegacyAbilityPrimary1"
+		{
+			"Name"		"LegacyAbilityPrimary1"
+			"Action"		"dota_ability_execute 0"
+		}
+		"Inventory1"
+		{
+			"Name"		"Inventory1"
+			"Action"		"dota_item_execute 0"
+			"Key"		"1"
+			"Mode"		"0"
+		}
+		"Inventory2"
+		{
+			"Name"		"Inventory2"
+			"Action"		"dota_item_execute 1"
+			"Key"		"2"
+			"Mode"		"0"
+		}
+		"Inventory3"
+		{
+			"Name"		"Inventory3"
+			"Action"		"dota_item_execute 2"
+			"Key"		"3"
+			"Mode"		"0"
+		}
+		"Inventory4"
+		{
+			"Name"		"Inventory4"
+			"Action"		"dota_item_execute 3"
+			"Key"		"Z"
+			"Mode"		"0"
+		}
+		"Inventory5"
+		{
+			"Name"		"Inventory5"
+			"Action"		"dota_item_execute 4"
+			"Key"		"X"
+			"Mode"		"0"
+		}
+		"Inventory6"
+		{
+			"Name"		"Inventory6"
+			"Action"		"dota_item_execute 5"
+			"Key"		"C"
+			"Mode"		"0"
+		}
+		"Inventory1QuickCast"
+		{
+			"Name"		"Inventory1QuickCast"
+			"Action"		"dota_item_quick_cast 0"
+		}
+		"ShopToggle"
+		{
+			"Name"		"ShopToggle"
+			"Action"		"toggleshoppanel"
+			"Key"		"F4"
+		}
+		"Console"
+		{
+			"Name"		"Console"
+			"Action"		"toggleconsole"
+			"Key"		"\"
+			"Mode"		"0"
+		}
+		"ShopTabConsumables"
+		{
+			"Name"		"ShopTabConsumables"
+			"Action"		"shop_nav_to_tab 0"
+			"Key"		"q"
+			"Mode"		"-1"
+		}
+		"Inventory1AutoCast"
+		{
+			"Key"		"1"
+			"Modifier"		"ALT"
+			"Mode"		"0"
+		}
+		"Inventory4AutoCast"
+		{
+			"Key"		"z"
+			"Modifier"		"ALT"
+			"Mode"		"0"
+		}
+		"InventoryTP"
+		{
+			"Key"		"T"
+			"Mode"		"0"
+		}
+		"TalentUpgradeStatLeft"
+		{
+			"Key"		"1"
+			"Mode"		"0"
+		}
+		"NeutralItemSelect1"
+		{
+			"Key"		"1"
+			"Mode"		"-1"
+		}
+	}
+	"HeroBuildNagCount2"		"3"
+	"Units"
+	{
+		"npc_dota_hero_kez"
+		{
+			"AbilityPrimary1"
+			{
+				"Key"		"Q"
+				"Mode"		"2"
+			}
+			"AbilityPrimary2"
+			{
+				"Key"		"W"
+				"Mode"		"2"
+			}
+			"AbilityUltimate"
+			{
+				"Key"		"R"
+				"Mode"		"2"
+			}
+		}
+	}
+	"AlgorithmicUpdateVersion"		"8"
+	"PerUnitKeybinds"		"1"
+	"HeroBuilds2"
+	{
+		"kez"
+		{
+			"workshop"		"123456"
+		}
+	}
+	"Items"
+	{
+		"item_blink"
+		{
+			"Mode"		"2"
+		}
+	}
+}

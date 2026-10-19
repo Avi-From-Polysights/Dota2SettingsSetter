@@ -1,0 +1,390 @@
+<Window x:Class="Dota2SettingsSetter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:Dota2SettingsSetter.Views"
+        Title="Dota 2 Settings Setter" Height="780" Width="1240" MinHeight="560" MinWidth="980"
+        Background="{StaticResource BgBrush}" Foreground="{StaticResource TextBrush}"
+        FontFamily="Segoe UI" FontSize="13" UseLayoutRounding="True"
+        WindowStartupLocation="CenterScreen" Icon="Assets/app.ico">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="RowsSource">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="GroupHeader" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <DataTemplate x:Key="ProfileTemplate" DataType="{x:Type views:ProfileItem}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Subtitle}" Foreground="{StaticResource FaintBrush}" FontSize="11" Margin="0,2,0,0"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <Border Grid.Column="1" Background="#1F3A2E" CornerRadius="3" Padding="6,1" VerticalAlignment="Center" Margin="6,0,0,0"
+                        Visibility="{Binding IsInFile, Converter={StaticResource BoolToVis}}"
+                        ToolTip="This is what Dota's keybind file holds right now">
+                    <TextBlock Text="IN DOTA" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource OkBrush}" />
+                </Border>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="RowTemplate" DataType="{x:Type views:BindingRow}">
+            <Border x:Name="Row" Padding="6,3" CornerRadius="4" Background="Transparent">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="32" />
+                    </Grid.ColumnDefinitions>
+                    <Border x:Name="Bar" Background="Transparent" CornerRadius="2" Margin="0,3" />
+                    <TextBlock x:Name="Label" Grid.Column="1" Text="{Binding Label}" Margin="10,0,8,0" VerticalAlignment="Center"
+                               TextTrimming="CharacterEllipsis" />
+                    <TextBlock Grid.Column="2" Text="{Binding WasText}" Foreground="{StaticResource FaintBrush}" FontSize="11"
+                               VerticalAlignment="Center" Margin="0,0,10,0" />
+                    <TextBlock Grid.Column="3" Text="&#xE7BA;" FontFamily="{StaticResource IconFont}" Foreground="{StaticResource DangerBrush}"
+                               VerticalAlignment="Center" Margin="0,0,10,0" ToolTip="{Binding ConflictText}" Background="Transparent"
+                               Visibility="{Binding HasConflict, Converter={StaticResource BoolToVis}}" />
+                    <Button x:Name="Keycap" Grid.Column="4" Style="{StaticResource KeycapButton}" Content="{Binding ChordText}"
+                            IsEnabled="{Binding IsEditable}" Click="KeyButton_Click" ToolTip="Click to change"
+                            AutomationProperties.Name="{Binding Label, StringFormat='{}{0} hotkey'}" />
+                    <Button Grid.Column="5" Style="{StaticResource IconButton}" Content="&#xE7A7;" Margin="4,0,0,0"
+                            ToolTip="Back to Default" Click="ResetButton_Click"
+                            AutomationProperties.Name="{Binding Label, StringFormat='Reset {0}'}"
+                            Visibility="{Binding IsOverridden, Converter={StaticResource BoolToVis}}" />
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsOverridden}" Value="True">
+                    <Setter TargetName="Bar" Property="Background" Value="{StaticResource ChangedBrush}" />
+                    <Setter TargetName="Keycap" Property="BorderBrush" Value="{StaticResource ChangedBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsUnbound}" Value="True">
+                    <Setter TargetName="Keycap" Property="Foreground" Value="{StaticResource FaintBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsEditable}" Value="False">
+                    <Setter TargetName="Keycap" Property="ToolTip" Value="Default mirrors your Dota hotkeys. Make a hero profile to change keys." />
+                </DataTrigger>
+                <Trigger SourceName="Row" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Row" Property="Background" Value="{StaticResource Surface2Brush}" />
+                </Trigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="18,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="Assets/icon.png" Width="32" Height="32" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" />
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Dota 2 Settings Setter" FontSize="16" FontWeight="SemiBold" />
+                        <TextBlock x:Name="VersionText" Foreground="{StaticResource FaintBrush}" FontSize="11" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Steam account" Foreground="{StaticResource FaintBrush}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <ComboBox x:Name="AccountBox" MinWidth="220" SelectionChanged="AccountBox_SelectionChanged" />
+                    <Border x:Name="DotaChip" CornerRadius="12" Padding="10,4" Margin="14,0,0,0" Background="{StaticResource Surface3Brush}"
+                            VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <Ellipse x:Name="DotaDot" Width="8" Height="8" Fill="{StaticResource FaintBrush}" VerticalAlignment="Center" />
+                            <TextBlock x:Name="DotaText" Text="Dota closed" Margin="6,0,0,0" FontSize="12" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Border>
+                    <Button Content="Reload" Margin="14,0,0,0" Click="Reload_Click"
+                            ToolTip="Read Dota's keybind file again" />
+                    <Button x:Name="RecaptureButton" Content="Update Default from Dota" Margin="8,0,0,0" Click="Recapture_Click"
+                            ToolTip="Take your current in-game hotkeys as the new Default" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Banner -->
+        <Border x:Name="Banner" Grid.Row="1" Visibility="Collapsed" Background="#2A2416" BorderBrush="#5C4A1C" BorderThickness="0,0,0,1"
+                Padding="18,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource IconFont}" Foreground="{StaticResource ChangedBrush}" Margin="0,2,10,0" />
+                <TextBlock x:Name="BannerText" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Center" />
+                <StackPanel x:Name="BannerButtons" Grid.Column="2" Orientation="Horizontal" Margin="12,0,0,0" />
+            </Grid>
+        </Border>
+
+        <!-- Main -->
+        <Grid Grid.Row="2" Margin="14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="230" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="400" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Profiles -->
+            <Border Style="{StaticResource Card}" Padding="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="PROFILES" Style="{StaticResource SectionLabel}" Margin="6,2,0,8" />
+                    <ListBox x:Name="ProfileList" Grid.Row="1" Background="Transparent" BorderThickness="0"
+                             ItemContainerStyle="{StaticResource ProfileListItem}" ItemTemplate="{StaticResource ProfileTemplate}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ProfileList_SelectionChanged" />
+                    <StackPanel Grid.Row="2" Margin="0,8,0,0">
+                        <Button x:Name="NewButton" Style="{StaticResource AccentButton}" Click="NewProfile_Click" HorizontalContentAlignment="Center"
+                                AutomationProperties.Name="New hero profile">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE710;" FontFamily="{StaticResource IconFont}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <TextBlock Text="New hero profile" />
+                            </StackPanel>
+                        </Button>
+                        <UniformGrid Columns="3" Margin="0,6,0,0">
+                            <Button x:Name="DuplicateButton" Content="Copy" Margin="0,0,3,0" Padding="4,6" Click="DuplicateProfile_Click"
+                                    ToolTip="Duplicate this profile" />
+                            <Button x:Name="RenameButton" Content="Rename" Margin="3,0" Padding="4,6" Click="RenameProfile_Click" />
+                            <Button x:Name="DeleteButton" Content="Delete" Margin="3,0,0,0" Padding="4,6" Click="DeleteProfile_Click" />
+                        </UniformGrid>
+                        <UniformGrid Columns="2" Margin="0,6,0,0">
+                            <Button Content="Import…" Margin="0,0,3,0" Click="ImportProfile_Click" ToolTip="Load a profile someone shared" />
+                            <Button x:Name="ExportButton" Content="Export…" Margin="3,0,0,0" Click="ExportProfile_Click"
+                                    ToolTip="Save this profile to a file you can share" />
+                        </UniformGrid>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Editor -->
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="12,0" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,14,16,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <TextBlock x:Name="EditorTitle" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                <TextBlock x:Name="EditorSubtitle" Foreground="{StaticResource MutedBrush}" Margin="0,2,0,0" TextWrapping="Wrap" />
+                            </StackPanel>
+                            <Grid Grid.Row="1" Margin="0,12,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <TextBox x:Name="SearchBox" TextChanged="SearchBox_TextChanged" Padding="26,5,6,5"
+                                             AutomationProperties.Name="Search hotkeys" />
+                                    <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" Foreground="{StaticResource FaintBrush}"
+                                               IsHitTestVisible="False" VerticalAlignment="Center" Margin="9,0,0,0" FontSize="12" />
+                                    <TextBlock x:Name="SearchHint" Text="Search actions or keys" Foreground="{StaticResource FaintBrush}"
+                                               IsHitTestVisible="False" VerticalAlignment="Center" Margin="28,0,0,0" />
+                                </Grid>
+                                <CheckBox x:Name="OnlyChangesBox" Grid.Column="1" Content="Only changes" Margin="14,0,2,0"
+                                          VerticalAlignment="Center" Checked="OnlyChanges_Changed" Unchecked="OnlyChanges_Changed" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <!-- A ListBox rather than a plain ItemsControl so grouped rows are visible to screen readers. -->
+                    <ListBox x:Name="RowsList" Grid.Row="1" ItemsSource="{Binding Source={StaticResource RowsSource}}"
+                             ItemTemplate="{StaticResource RowTemplate}" Padding="10,4,10,12"
+                             Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextBrush}"
+                             AutomationProperties.Name="Hotkeys"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                             VirtualizingPanel.ScrollUnit="Pixel">
+                        <ListBox.Template>
+                            <ControlTemplate TargetType="ListBox">
+                                <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="False" CanContentScroll="True">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Focusable" Value="False" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                <Setter Property="AutomationProperties.Name" Value="{Binding Label}" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource SectionLabel}" Margin="10,14,0,6" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
+                    </ListBox>
+                    <TextBlock x:Name="EmptyText" Grid.Row="1" Foreground="{StaticResource FaintBrush}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="30" Visibility="Collapsed" />
+                </Grid>
+            </Border>
+
+            <!-- Switch panel -->
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="SWITCH IN GAME" Style="{StaticResource SectionLabel}" />
+                            <TextBlock x:Name="ConsoleHint" Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,6,0,10" />
+
+                            <TextBlock x:Name="ToLabel" FontWeight="SemiBold" Margin="0,0,0,4" />
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="ExecToBox" Style="{StaticResource CommandBox}" />
+                                <Button x:Name="CopyExecToButton" Grid.Column="1" Content="Copy" Margin="6,0,0,0" Click="Copy_Click"
+                                        Tag="{Binding ElementName=ExecToBox}" />
+                            </Grid>
+
+                            <StackPanel x:Name="BackPanel">
+                                <TextBlock Text="Back to Default" FontWeight="SemiBold" Margin="0,12,0,4" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="ExecBackBox" Style="{StaticResource CommandBox}" />
+                                    <Button x:Name="CopyExecBackButton" Grid.Column="1" Content="Copy" Margin="6,0,0,0" Click="Copy_Click"
+                                            Tag="{Binding ElementName=ExecBackBox}" />
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock x:Name="ExecStatusIcon" FontFamily="{StaticResource IconFont}" VerticalAlignment="Top" Margin="0,2,6,0" />
+                                <TextBlock x:Name="ExecStatus" Foreground="{StaticResource FaintBrush}" FontSize="12" TextWrapping="Wrap" MaxWidth="330" />
+                            </StackPanel>
+
+                            <ToggleButton x:Name="DirectToggle" Style="{StaticResource DisclosureToggle}" Margin="0,14,0,0"
+                                          Content="Paste the binds directly instead" />
+                            <StackPanel Visibility="{Binding IsChecked, ElementName=DirectToggle, Converter={StaticResource BoolToVis}}" Margin="0,8,0,0">
+                                <TextBlock Foreground="{StaticResource FaintBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,8"
+                                           Text="No file needed: these change only the keys that differ, starting from Default." />
+                                <TextBlock x:Name="DirectToLabel" FontWeight="SemiBold" Margin="0,0,0,4" />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="DirectToBox" Style="{StaticResource CommandBox}" MaxHeight="120"
+                                             VerticalScrollBarVisibility="Auto" />
+                                    <Button Grid.Column="1" Content="Copy" Margin="6,0,0,0" VerticalAlignment="Top" Click="Copy_Click"
+                                            Tag="{Binding ElementName=DirectToBox}" />
+                                </Grid>
+                                <StackPanel x:Name="DirectBackPanel">
+                                    <TextBlock x:Name="DirectBackLabel" FontWeight="SemiBold" Margin="0,10,0,4" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="DirectBackBox" Style="{StaticResource CommandBox}" MaxHeight="120"
+                                                 VerticalScrollBarVisibility="Auto" />
+                                        <Button Grid.Column="1" Content="Copy" Margin="6,0,0,0" VerticalAlignment="Top" Click="Copy_Click"
+                                                Tag="{Binding ElementName=DirectBackBox}" />
+                                    </Grid>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <ItemsControl x:Name="WarningsList" Margin="0,12,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource IconFont}" Foreground="{StaticResource ChangedBrush}"
+                                                       Margin="0,2,8,0" FontSize="12" />
+                                            <TextBlock Grid.Column="1" Text="{Binding}" TextWrapping="Wrap" FontSize="12"
+                                                       Foreground="{StaticResource MutedBrush}" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <Border Background="{StaticResource Surface2Brush}" CornerRadius="4" Padding="10,8" Margin="0,8,0,0">
+                                <TextBlock Foreground="{StaticResource FaintBrush}" FontSize="12" TextWrapping="Wrap"
+                                           Text="Heads up: Dota's own hotkey menu can win over console binds on the same key. If a key doesn't switch in game, use Write to Dota below instead." />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+                        <StackPanel>
+                            <TextBlock Text="SWITCH BY KEYBIND FILE" Style="{StaticResource SectionLabel}" />
+                            <TextBlock Foreground="{StaticResource MutedBrush}" TextWrapping="Wrap" Margin="0,6,0,10"
+                                       Text="Writes the profile into Dota's own hotkey settings, so everything carries over exactly, Alt combos included. Close Dota first; it applies the next time Dota starts." />
+                            <TextBlock x:Name="FileStateText" Margin="0,0,0,10" TextWrapping="Wrap" />
+                            <WrapPanel>
+                                <Button x:Name="WriteButton" Style="{StaticResource AccentButton}" Click="WriteToDota_Click" Margin="0,0,8,6" />
+                                <Button x:Name="RestoreButton" Content="Restore Default" Click="RestoreDefault_Click" Margin="0,0,0,6" />
+                            </WrapPanel>
+                            <TextBlock x:Name="FileHint" Foreground="{StaticResource FaintBrush}" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Footer -->
+        <Border Grid.Row="3" Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,0,0"
+                Padding="18,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="StatusText" Foreground="{StaticResource MutedBrush}" FontSize="12" TextTrimming="CharacterEllipsis"
+                           VerticalAlignment="Center" />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource LinkButton}" Content="Open data folder" Click="OpenDataFolder_Click" FontSize="12" />
+                    <TextBlock Text="·" Foreground="{StaticResource FaintBrush}" Margin="8,0" />
+                    <Button Style="{StaticResource LinkButton}" Content="Keybind backups" Click="OpenBackups_Click" FontSize="12" />
+                    <TextBlock Text="·" Foreground="{StaticResource FaintBrush}" Margin="8,0" />
+                    <Button Style="{StaticResource LinkButton}" Content="Report a bug" Click="ReportBug_Click" FontSize="12" />
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,45 @@
+name: Bug report
+description: Something broke or behaved wrong
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      description: Shown in the title bar
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Steps to reproduce, what you expected, and what you saw instead
+      placeholder: |
+        1. Clicked Write Invoker to Dota
+        2. Started Dota
+        3. Item slot 1 was still on Z
+    validations:
+      required: true
+  - type: dropdown
+    id: method
+    attributes:
+      label: Switch method involved
+      options:
+        - exec command (exec dss_...)
+        - Pasted the bind commands
+        - Write to Dota (keybind file)
+        - Not about switching
+  - type: textarea
+    id: console
+    attributes:
+      label: Console text
+      description: If it's about switching in game, what you typed and what Dota printed
+      render: text
+  - type: textarea
+    id: files
+    attributes:
+      label: Error log, screenshots, profile
+      description: If the app showed an error, attach %APPDATA%\Dota2SettingsSetter\error.log

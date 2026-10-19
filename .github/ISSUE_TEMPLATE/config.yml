@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Download the latest release
+    url: https://github.com/Avi-From-Polysights/Dota2SettingsSetter/releases/latest
+    about: Get Dota2SettingsSetter.exe
+  - name: Contributing guide
+    url: https://github.com/Avi-From-Polysights/Dota2SettingsSetter/blob/master/CONTRIBUTING.md
+    about: How to fork, open PRs, and get changes reviewed

@@ -1,0 +1,5 @@
+* text=auto
+# Dota writes these with LF; the round-trip tests compare bytes.
+*.lst text eol=lf
+*.ico binary
+*.png binary
